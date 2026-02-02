@@ -1,6 +1,11 @@
 import mongoose , {Schema} from "mongoose";
 
 const borrowSchema = new Schema({
+        borrowTransacId:{
+            type: Number,
+            required: true,
+            unique: true
+        },
         lenderName : {
             type: String,
             required: true,
