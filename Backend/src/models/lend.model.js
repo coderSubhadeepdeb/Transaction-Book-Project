@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const lendSchema = new mongoose.Schema({
+    userId: {
+        type: String,
+        required: true,
+        trim: true
+    },
     lendTransacId:{
         type: Number,
         required: true,
