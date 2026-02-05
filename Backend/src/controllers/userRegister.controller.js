@@ -4,7 +4,7 @@ import User from "../models/user.model.js";
 
 const addUser = async (req,res) =>{
     const {uid, email} = req.user;
-    const {userName, userEmail, userContact, password, occupation, organisation} = req.body;
+    const {userName, userEmail, userContact, occupation, organisation} = req.body;
 
     try{
         const user = await User.findOne({userId: uid});

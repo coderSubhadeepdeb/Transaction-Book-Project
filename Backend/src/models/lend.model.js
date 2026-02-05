@@ -50,6 +50,11 @@ const lendSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    reminderIntervalUnit: {
+      type: String,
+      enum: ["minutes", "hours", "days"]
+    },
+    nextReminderAt: Date
 },{
     timestamps: true
 });

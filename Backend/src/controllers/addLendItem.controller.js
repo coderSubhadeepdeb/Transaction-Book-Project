@@ -1,16 +1,26 @@
 import admin from "../utils/firebaseAdmin.js";
 import { Lend } from "../models/lend.model.js";
 import crypto from "crypto";
-
+import reminderUnitReturnVal from "../utils/reminderUnitVal.js";
 
 const addLendData = async (req, res) =>{
     const {uid, email} = req.user;
-    const {borrowerName,amount,borrowerEmail,borrowerContactNumber,description,expectedReturnDays,setReminderForBorrower,setReminderForYou,reminderPeriod} = req.body;
+    const {borrowerName,amount,borrowerEmail,borrowerContactNumber,description,expectedReturnDays,setReminderForBorrower,setReminderForYou,reminderPeriod,reminderIntervalUnit} = req.body;
 
     const txnId = crypto.randomUUID();
 
     try{
         const lendItem = await Lend.findOne({lendTransacId: txnId});
+        let nextReminderAt = null;
+
+        if (setReminderForBorrower) {
+            const ms = reminderUnitReturnVal(
+            reminderIntervalUnit,
+            reminderPeriod
+            );
+
+            nextReminderAt = new Date(Date.now() + ms);
+        }
 
         if(!lendItem){
             const lend = await Lend.create({
@@ -24,7 +34,9 @@ const addLendData = async (req, res) =>{
                 expectedReturnDays,
                 setReminderForBorrower,
                 setReminderForYou,
-                reminderPeriod
+                reminderPeriod,
+                reminderIntervalUnit,
+                nextReminderAt
             });
 
             return res.status(200).json({
